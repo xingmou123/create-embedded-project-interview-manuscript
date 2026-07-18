@@ -1,13 +1,13 @@
 ---
 name: create-embedded-project-interview-manuscript
-description: Create, revise, audit, or synchronize Chinese embedded-project interview manuscripts from resume bullets, rough project descriptions, Feishu documents, DOCX files, software or hardware design documents, code, schematics, logs, test records, and datasheets. Use when the user asks for 项目面试手稿、项目问答、口述稿、学员讲解、反向追问、项目口径统一、项目真实性检查、实战调试案例，或把飞书手稿导出为 DOCX. Produces concise engineering-style answers that can be spoken directly, fills missing technical decisions with coherent production-grade practice, and requires exactly three deep debugging cases.
+description: Create, revise, audit, or synchronize formal Chinese embedded-project interview manuscripts from resume bullets, rough project descriptions, Feishu documents, DOCX files, software or hardware design documents, code, schematics, logs, test records, and datasheets. Use when the user asks for 项目面试手稿、项目问答、口述稿、学员讲解、反向追问、项目口径统一、项目真实性检查、实战调试案例、飞书正式手稿、工程配图，或把飞书手稿导出为 DOCX. Produces direct engineering-style answers, formal purple-answer layout, pure-ImageGen custom engineering figures, coherent production-grade technical decisions, and exactly three deep debugging cases.
 ---
 
 # 嵌入式项目面试手稿
 
 ## 目标
 
-把零散项目资料整理成一份学员能理解、能记住、能直接讲给面试官听的工程手稿。成稿必须像真正做过设计和联调的工程师在解释项目：事实统一，数值合理，因果完整，语言自然，不堆术语。
+把零散项目资料整理成一份学员能理解、能记住、能直接讲给面试官听的正式工程手稿。成稿必须像真正做过设计和联调的工程师在解释项目：事实统一，数值合理，因果完整，语言自然，不堆术语。可见文档直接呈现完整答案，不显示“可直接口述回答”“标准答案”等教学标签。
 
 这不是正式软硬件设计方案。设计方案负责定义系统；本 Skill 负责把已确定的系统讲清楚、问透，并补齐面试所需的工程判断。需要先创建或修订正式设计文档时，先使用 `$create-hw-sw-design-docs`，再回到本 Skill。
 
@@ -19,6 +19,7 @@ description: Create, revise, audit, or synchronize Chinese embedded-project inte
 - 始终读取 [interview-coverage-matrix.md](references/interview-coverage-matrix.md)：控制问题覆盖面。
 - 始终读取 [debugging-cases.md](references/debugging-cases.md)：生成并审查三个调试案例。
 - 创建、改写、排版或交付手稿时读取 [manuscript-style-and-delivery.md](references/manuscript-style-and-delivery.md)。
+- 新建、改写、补图、替换图片或交付完整手稿时读取 [engineering-figures-imagegen.md](references/engineering-figures-imagegen.md)：规划并生成纯 ImageGen 工程配图。
 
 ## 工作方式
 
@@ -33,7 +34,7 @@ description: Create, revise, audit, or synchronize Chinese embedded-project inte
 
 ## 第一步：读取材料并建立内部底稿
 
-先盘点用户提供的项目描述、简历、设计文档、飞书、DOCX、代码、原理图、日志、测试记录和官方资料。飞书链接优先使用 `$lark-doc`；DOCX 使用 `$documents`；需要查询芯片、协议或工具的当前官方行为时，使用 `$web-access`，技术结论只采用数据手册、参考手册、协议规范和官方文档等一手来源。
+先盘点用户提供的项目描述、简历、设计文档、飞书、DOCX、代码、原理图、日志、测试记录和官方资料。飞书链接优先使用 `$lark-doc`；DOCX 使用 `$documents`；需要查询芯片、协议或工具的当前官方行为时，使用 `$web-access`，技术结论只采用数据手册、参考手册、协议规范和官方文档等一手来源。软硬件设计文档不仅是文字依据，也是配图选题来源：提取其中已经锁定的架构、任务、协议、状态、恢复、资源和调试机制，转成手稿的配图计划；不要直接照搬已经过时或与当前口径冲突的图。
 
 按以下优先级解决冲突：
 
@@ -70,24 +71,38 @@ description: Create, revise, audit, or synchronize Chinese embedded-project inte
 
 固定骨架如下，技术章节随项目变化：
 
-1. 项目定位和一句话技术路线；
-2. 30 秒口述版和 90 秒口述版；
-3. 系统架构、执行域、数据流和职责边界；
-4. 沿项目主线展开的技术问答；
-5. 三个深度实战调试案例；
-6. 反向追问与设计取舍。
+1. 产品形态与项目背景：第一屏先让学员看到产品是什么、在哪里使用，再讲现场问题、系统组成、工作流程、职责和交付阶段；
+2. 软硬件详细设计资料：紧跟项目背景提供软件/硬件 PDF 预览，并保留对应 Word 下载入口，不把整份说明书复制进正文；
+3. 学习准备：只讲理解本项目必须掌握的前置知识；
+4. 30 秒口述版和 90 秒口述版；
+5. 系统架构、执行域、数据流和职责边界；
+6. 分层技术问答：必须讲透、模块深挖、压力追问；
+7. 三个深度实战调试案例；
+8. 反向追问与设计取舍。
 
-不要为了套模板强行加入 BLE、Bootloader、云端或工业通信。问题数量不固定，以覆盖真正重要的面试面为停止条件。
+设备、可穿戴、机器人、仪器、终端或其他具有明确物理形态的项目执行固定开篇顺序：`产品图 -> 图注 -> 项目背景/工作方式 -> 软硬件详细设计资料 -> 学习准备`。产品图必须位于第一个一级标题正下方，不能先放学习资料、抽象架构、题库或长段介绍。已有实物照片时优先使用；没有实物素材但用户要求展示产品形态，或学员仅靠文字无法建立产品认知时，必须用 ImageGen 的 `product-mockup` 生成写实、克制、物理可行的产品展示图。该图用于解释形态与使用关系，不得写成真实样机、现场照片或测试证据。
+
+开篇产品图不能只画孤立外壳。按项目实际边界同时表现能帮助理解形态的关键对象，例如设备本体、佩戴/安装方式、手机或上位机、网关/接口以及真实使用环境；禁止加入未确认的传感器、接口、品牌、序列号和生产信息。车载、医疗、工业等高风险场景默认采用安全、受控或静止状态，不能用危险操作来增强画面感。
+
+软硬件详细设计资料必须在问答前、且尽量位于开篇前几屏。默认按候选人岗位相关性排序：嵌入式软件岗位先软件后硬件，硬件岗位先硬件后软件。每份资料使用“名称 + 一段范围导读 + PDF 预览 + 同版本 Word 下载”；只有 Word 时先导出同版本 PDF。禁止只写本地路径、只放 Word 卡片、把附件堆到文末，或用几句话代替已有的完整设计说明书。
+
+不要为了套模板强行加入 BLE、Bootloader、云端或工业通信。问题数量不固定，以覆盖真正重要的面试面为停止条件。三层问答的数量也不设硬指标：第一层让学员能把项目讲明白，第二层回答模块级追问，第三层只保留真正能检验工程判断的问题。
 
 先让学员看懂一条主线：数据或事件从哪里来，谁搬运，谁处理，谁判断，谁输出，异常后怎样恢复。再讲局部原理。多个 MCU、核、进程、任务或端侧/云侧并存时，先划清执行域，避免学员把职责混在一起。
+
+搭建章节时同步建立内部配图计划，记录图号、目标章节、要解决的理解难点、图型、核心路线、生成方式、插入位置和图注。跨设备、App、网关或云端的完整项目通常不能只放一张总架构图；从软硬件设计内容中继续识别执行域、任务/队列、协议分帧、状态恢复、内存/功耗或调试证据等真正需要图示的机制。简单项目不凑图，复杂项目也不能把所有细节挤进一张图。
+
+学习准备必须自包含。外部网页、视频和文章只用于事实核查与写作参考，不能把学习责任甩给学员；确有内部课程或内部文档时可以给入口。代码阅读路线、简历职责到源码文件的逐项映射仅在源码完整且对应关系经过确认时加入，源码不完整时不要用猜测的文件名和调用关系制造“很精确”的假象。
+
+项目已确认采用自研 PCB 或处于小批量交付阶段时，主手稿、硬件说明书、软件说明书和配图必须统一升级到该成熟度口径，不得继续写成开发板、模块拼接或 Demo 验证平台。允许采用集成无线模组，但要明确“自研主板承载模组与外围电路”的板级边界。批次数量、首轮通过率、最终验收率和历史失效原因只使用用户确认或测试记录；不知道具体失效原因时直接不写，不能为了完整而补造。
 
 ## 第四步：写能直接口述的问答
 
 每道题只保留必要结构：
 
 - **问题**：面试官真实会问的一句话。
-- **口述回答**：先给结论，再按实现、原因、异常处理和边界自然展开。学员可以直接念，听起来仍像现场表达。
-- **学员备注**：仅在概念困难、容易混淆或存在事实边界时增加一小段黑色说明。
+- **完整回答**：整段使用紫色文本，先给结论，再按实现、原因、异常处理和边界自然展开。学员可以直接念，听起来仍像现场表达；不得在回答前另加“可直接口述回答”等标签。
+- **补充理解**：仅在概念困难、容易混淆或存在事实边界时增加一小段普通黑色说明。
 
 正常问题优先控制在约 30 至 90 秒。不要把所有知识都塞进首答；把容易被追问的细节留给后续问题。重要技术词至少要能解释：原理是什么、为什么这样选、失败时怎么办、适用边界在哪里。
 
@@ -101,9 +116,9 @@ description: Create, revise, audit, or synchronize Chinese embedded-project inte
 
 每个案例都必须闭合：
 
-`具体现象 -> 排查与排除 -> 关键证据 -> 完整根因 -> 对症修改 -> 回归/边界/故障注入验证 -> 必要的学员备注`
+`具体现象 -> 排查与排除 -> 关键证据 -> 完整根因 -> 对症修改 -> 回归/边界/故障注入验证 -> 必要的补充理解`
 
-仪器、日志、GPIO、计数器、抓包、波形或快照必须实际帮助缩小范围，不能作为装饰。案例正文写成可以直接讲给面试官的口述稿；难点和容易被追问的器件行为放进简短备注。按 [debugging-cases.md](references/debugging-cases.md) 做独立技术复核，任一案例不合格即不能交付。
+仪器、日志、GPIO、计数器、抓包、波形或快照必须实际帮助缩小范围，不能作为装饰。案例正文写成可以直接讲给面试官的完整回答；难点和容易被追问的器件行为放进简短补充理解。按 [debugging-cases.md](references/debugging-cases.md) 做独立技术复核，任一案例不合格即不能交付。
 
 ## 第六步：检查学习完整性
 
@@ -111,6 +126,7 @@ description: Create, revise, audit, or synchronize Chinese embedded-project inte
 
 - 每条简历职责至少有一道能直接命中的问题；
 - 架构图、数据流、口述回答和案例使用同一口径；
+- 配图计划覆盖正文中真正难以仅靠文字理解的关键机制，所有自定义解释图均通过纯 ImageGen 生成和筛选；
 - 重要术语能回答原理、选型、异常和边界；
 - 关键设计能解释取舍；
 - 三个案例能回扣前文机制，不出现正文从未建立的新系统；
@@ -121,11 +137,11 @@ description: Create, revise, audit, or synchronize Chinese embedded-project inte
 
 ## 第七步：排版、写回和交付
 
-飞书可用时，以飞书为唯一活稿。迭代期间只改飞书；最终交付默认同时保留最新飞书和同一 revision 导出的 DOCX 快照。用户明确只要一种格式时才单独交付。不要长期维护两个可独立编辑的版本。
+用户提供飞书链接或明确要求飞书时，以飞书主手稿为唯一活稿和默认交付，不额外生成主手稿 Word。软硬件详细设计说明书属于独立工程附件：按 `$create-hw-sw-design-docs` 生成 Word，并导出同版本 PDF；飞书主手稿只保留简短导读、PDF 预览和 Word 下载入口，不把说明书全文展开，也不把附件误当成第二份主手稿。只有用户明确要求导出主手稿快照时，才从最新飞书 revision 生成主手稿 DOCX。
 
-写回前重新读取文档版本和目标位置，避免用旧 block ID 覆盖用户刚做的修改。写回后复读受影响章节，检查标题层级、答案颜色或加粗、图片、列表、链接和相邻段落。DOCX 交付必须渲染后目检，不能只验证文件可打开。
+写回前重新读取文档版本和目标位置，避免用旧 block ID 覆盖用户刚做的修改。写回后复读受影响章节，检查标题层级、答案颜色、图片、列表、链接和相邻段落。DOCX 交付必须渲染后目检，不能只验证文件可打开。
 
-图只在能显著降低理解难度时加入。工程结构图、时序图和状态机优先使用可校验的 SVG 或画板；不要用生成式图片画精确连线、寄存器、协议时序或数值图。
+所有自定义解释图强制使用纯 ImageGen，并按 [engineering-figures-imagegen.md](references/engineering-figures-imagegen.md) 生成、筛选、保存和插入。禁止用纯文本/ASCII 路线图、代码块、Mermaid、SVG、画板、PIL、Canvas 或本地重绘替代最终配图。用户提供或权威来源的实物照片、原理图、波形、日志和界面截图可以作为来源图使用；没有实物素材时，工程机制使用抽象工程图，产品总览和佩戴/HUD 章节可以生成克制的产品展示图来讲清系统形态。可见文档不添加“概念图”“非实物”“真实样机照片”等来源标签，也不能把生成图口述成现场照片。图内技术文字、箭头和路线错误时必须重新生成，不能本地改字、改箭头或改布局。
 
 ## 交付门槛
 
@@ -137,4 +153,8 @@ description: Create, revise, audit, or synchronize Chinese embedded-project inte
 - 恰好三个调试案例全部通过质量审查；
 - 每个关键数值在全文一致，并有设计依据；
 - 文风简洁、自然、能直接说出口；
-- 默认已完成飞书活稿与同 revision 的 DOCX 快照；用户明确只要一种格式或飞书不可用时，已说明例外并完成相应版面检查。
+- 可见文档没有“可直接口述回答”等提示标签；技术路线、30/90 秒介绍、全部问答和三个案例的完整回答均为紫色文本，补充理解保持普通黑色；
+- 配图计划已执行，所有自定义解释图均为通过筛选的纯 ImageGen 资产，已插入对应章节且不存在文本路线图或旧图残留；
+- 具有物理形态的项目已按固定开篇顺序交付：第一屏可见产品图，软硬件设计 PDF 预览和 Word 下载位于学习准备与问答之前；
+- 已完成一次外部架构师视角的静默评审，至少检查项目边界、职责、数据流、协议、资源、恢复、交付成熟度和可追问性；发现的问题已直接修入正文，不把冗长评审表作为默认交付；
+- 已完成用户要求的交付载体；飞书场景未擅自生成主手稿 DOCX，设计说明书附件的 Word/PDF 与飞书主手稿 revision 保持一致。
