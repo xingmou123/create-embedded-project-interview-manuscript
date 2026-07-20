@@ -1,6 +1,6 @@
 ---
 name: create-embedded-project-interview-manuscript
-description: Create, revise, audit, or synchronize formal Chinese embedded-project interview manuscripts from resume bullets, rough project descriptions, Feishu documents, DOCX files, software or hardware design documents, code, schematics, logs, test records, and datasheets. Use when the user asks for 项目面试手稿、项目问答、口述稿、学员讲解、反向追问、项目口径统一、项目真实性检查、实战调试案例、飞书正式手稿、工程配图，或把飞书手稿导出为 DOCX. Uses a scoped grill-me clarification gate before writing, then produces direct engineering-style answers, formal purple-answer layout, pure-ImageGen custom engineering figures, coherent production-grade technical decisions, and exactly three deep debugging cases.
+description: Create, revise, audit, synchronize, or archive formal Chinese embedded-project interview manuscripts from resume bullets, rough project descriptions, Feishu documents, DOCX files, software or hardware design documents, code, schematics, logs, test records, and datasheets. Use when the user asks for 项目面试手稿、项目问答、口述稿、学员讲解、反向追问、项目口径统一、项目真实性检查、实战调试案例、飞书正式手稿、工程配图、封版后归档到简历项目库，或把飞书手稿导出为 DOCX. Uses a scoped grill-me clarification gate before writing, then produces direct engineering-style answers, formal purple-answer layout, pure-ImageGen custom engineering figures, coherent production-grade technical decisions, and exactly three deep debugging cases.
 ---
 
 # 嵌入式项目面试手稿
@@ -21,6 +21,7 @@ description: Create, revise, audit, or synchronize formal Chinese embedded-proje
 - 始终读取 [debugging-cases.md](references/debugging-cases.md)：生成并审查三个调试案例。
 - 创建、改写、排版或交付手稿时读取 [manuscript-style-and-delivery.md](references/manuscript-style-and-delivery.md)。
 - 新建、改写、补图、替换图片或交付完整手稿时读取 [engineering-figures-imagegen.md](references/engineering-figures-imagegen.md)：规划并生成纯 ImageGen 工程配图。
+- 用户确认封版完成或要求存入简历项目库时读取 [project-library-archive.md](references/project-library-archive.md)：更新项目描述旁的唯一手稿入口。
 
 ## 工作方式
 
@@ -30,6 +31,7 @@ description: Create, revise, audit, or synchronize formal Chinese embedded-proje
 2. **修订**：在现有手稿中补问答、补解释、改口述或加入案例。
 3. **审计**：检查事实冲突、学习难点、主线、覆盖面和追问漏洞，不擅自改原文。
 4. **同步交付**：以最新飞书手稿为准生成 DOCX 快照，或在飞书不可用时暂以 DOCX 为主稿。
+5. **封版归档**：把已经确认完成的唯一飞书活稿登记到简历项目库中对应项目描述旁。
 
 用户只要求审计或建议时，不直接写回文档。用户要求创建、修改、加入、同步或导出时，完成实际写入和必要验证。没有简历或职责材料时，进入“架构覆盖模式”：可以完成技术主线、问答、取舍和三个案例，但不得自动写“我负责”“我完成”，职责覆盖项记为 N/A，等材料补齐后再做个性化映射。
 
@@ -165,6 +167,12 @@ description: Create, revise, audit, or synchronize formal Chinese embedded-proje
 
 所有自定义解释图强制使用纯 ImageGen，并按 [engineering-figures-imagegen.md](references/engineering-figures-imagegen.md) 生成、筛选、保存和插入。禁止用纯文本/ASCII 路线图、代码块、Mermaid、SVG、画板、PIL、Canvas 或本地重绘替代最终配图。用户提供或权威来源的实物照片、原理图、波形、日志和界面截图可以作为来源图使用；没有实物素材时，工程机制使用抽象工程图，产品总览和佩戴/HUD 章节可以生成克制的产品展示图来讲清系统形态。可见文档不添加“概念图”“非实物”“真实样机照片”等来源标签，也不能把生成图口述成现场照片。图内技术文字、箭头和路线错误时必须重新生成，不能本地改字、改箭头或改布局。
 
+## 第八步：封版后归档到简历项目库
+
+用户明确确认手稿已经完成，或要求存入简历项目库时，按 [project-library-archive.md](references/project-library-archive.md) 执行。归档只维护项目描述旁的唯一“项目手稿”入口：已有旧链接时替换为当前唯一活稿，没有入口时按项目库现有样式补在项目名称或任职时间之后、项目简介/描述之前。不得复制正文、重复创建项目条目或同时更新多个同名项目库。
+
+归档前重新确认活稿 token 和最新 revision；归档后复读项目名称、任职时间、手稿入口和相邻项目简介/描述，并实际读取链接目标，确认它仍指向刚完成的活稿。无法唯一识别项目库、项目条目或活稿时，只问一个会改变写入目标的问题，不凭编辑时间批量猜测。
+
 ## 交付门槛
 
 以下任一项未满足，不得宣称完成：
@@ -182,3 +190,4 @@ description: Create, revise, audit, or synchronize formal Chinese embedded-proje
 - 具有物理形态的项目已按固定开篇顺序交付：第一屏可见产品图，软硬件设计 PDF 预览和 Word 下载位于学习准备与问答之前；
 - 已完成一次外部架构师视角的静默评审，至少检查项目边界、职责、数据流、协议、资源、恢复、交付成熟度和可追问性；发现的问题已直接修入正文，不把冗长评审表作为默认交付；
 - 已完成用户要求的交付载体；飞书场景未擅自生成主手稿 DOCX，设计说明书附件的 Word/PDF 与飞书主手稿 revision 保持一致。
+- 用户已明确确认封版完成且简历项目库可用时，项目描述旁的唯一“项目手稿”入口已指向当前活稿；已复读相邻内容并确认没有重复条目或旧链接残留。
