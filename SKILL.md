@@ -1,6 +1,6 @@
 ---
 name: create-embedded-project-interview-manuscript
-description: Create, revise, audit, or synchronize formal Chinese embedded-project interview manuscripts from resume bullets, rough project descriptions, Feishu documents, DOCX files, software or hardware design documents, code, schematics, logs, test records, and datasheets. Use when the user asks for 项目面试手稿、项目问答、口述稿、学员讲解、反向追问、项目口径统一、项目真实性检查、实战调试案例、飞书正式手稿、工程配图，或把飞书手稿导出为 DOCX. Produces direct engineering-style answers, formal purple-answer layout, pure-ImageGen custom engineering figures, coherent production-grade technical decisions, and exactly three deep debugging cases.
+description: Create, revise, audit, or synchronize formal Chinese embedded-project interview manuscripts from resume bullets, rough project descriptions, Feishu documents, DOCX files, software or hardware design documents, code, schematics, logs, test records, and datasheets. Use when the user asks for 项目面试手稿、项目问答、口述稿、学员讲解、反向追问、项目口径统一、项目真实性检查、实战调试案例、飞书正式手稿、工程配图，或把飞书手稿导出为 DOCX. Uses a scoped grill-me clarification gate before writing, then produces direct engineering-style answers, formal purple-answer layout, pure-ImageGen custom engineering figures, coherent production-grade technical decisions, and exactly three deep debugging cases.
 ---
 
 # 嵌入式项目面试手稿
@@ -16,6 +16,7 @@ description: Create, revise, audit, or synchronize formal Chinese embedded-proje
 根据任务读取以下参考文件，不要只凭本页概括执行：
 
 - 始终读取 [project-ledger.md](references/project-ledger.md)：建立唯一项目口径。
+- 始终读取 [clarification-gate.md](references/clarification-gate.md)：在正式生成或写回前完成最小澄清门。
 - 始终读取 [interview-coverage-matrix.md](references/interview-coverage-matrix.md)：控制问题覆盖面。
 - 始终读取 [debugging-cases.md](references/debugging-cases.md)：生成并审查三个调试案例。
 - 创建、改写、排版或交付手稿时读取 [manuscript-style-and-delivery.md](references/manuscript-style-and-delivery.md)。
@@ -32,11 +33,27 @@ description: Create, revise, audit, or synchronize formal Chinese embedded-proje
 
 用户只要求审计或建议时，不直接写回文档。用户要求创建、修改、加入、同步或导出时，完成实际写入和必要验证。没有简历或职责材料时，进入“架构覆盖模式”：可以完成技术主线、问答、取舍和三个案例，但不得自动写“我负责”“我完成”，职责覆盖项记为 N/A，等材料补齐后再做个性化映射。
 
+## 第零步：通过最小澄清门
+
+正式生成正文、图片、附件或写回活稿前，按 [clarification-gate.md](references/clarification-gate.md) 执行内置的 `grill-me` 流程。先从环境和资料查事实，再由执行者完成架构判断；只有仍然无法消除且会改变个人职责、产品物理形态或项目边界的问题才询问用户。
+
+每次只问一个问题并附推荐答案。已经回答的决定立即冻结，不重复确认。没有此类问题时直接执行；发生过询问时，全部问完后给出一次简短确认稿，得到用户确认后才能开始正式生成或写回。
+
+全局默认采用小批量量产成熟度；三个最终调试案例均视为真实发生且有实证；输入材料中已有的量化结果均视为真实场景结果。缺失的工程参数由执行者按量产经验直接定值并计算裕量，技术路线冲突由执行者结合证据、官方约束和工程合理性裁决。除非用户在具体项目中明确覆盖，不得就这些默认项重复提问。
+
+完整封版时在项目 `work` 目录保存 `clarification_gate.json`，运行 `python <本 Skill 目录>/scripts/validate_clarification_gate.py <清单路径>`。校验未通过时禁止交付。局部审计不创建清单，也不得借审计任务修改正文。
+
+### 主线程与活稿锁
+
+开始修改前先确定唯一飞书活稿及其文档 token。线程搜索工具可用时，按 token、项目名和目标结果搜索最近线程；命中同一成果时优先续聊原主线程。确需由新线程接手时，先确认原线程已经完成、停止写入或明确被替代。
+
+同一份飞书活稿同时只允许一个线程写入。写回前必须读取最新 revision；不得让“新建、融合、返工、补图、封版”分别形成多个同时写入的主线程。软硬件设计说明书使用 `$create-hw-sw-design-docs`，面试手稿使用本 Skill，不再为同一成果创建第三个功能重叠的 Skill。
+
 ## 第一步：读取材料并建立内部底稿
 
 先盘点用户提供的项目描述、简历、设计文档、飞书、DOCX、代码、原理图、日志、测试记录和官方资料。飞书链接优先使用 `$lark-doc`；DOCX 使用 `$documents`；需要查询芯片、协议或工具的当前官方行为时，使用 `$web-access`，技术结论只采用数据手册、参考手册、协议规范和官方文档等一手来源。软硬件设计文档不仅是文字依据，也是配图选题来源：提取其中已经锁定的架构、任务、协议、状态、恢复、资源和调试机制，转成手稿的配图计划；不要直接照搬已经过时或与当前口径冲突的图。
 
-按以下优先级解决冲突：
+按以下优先级解决冲突。技术规范决定协议和器件行为是否成立，项目证据决定项目是否采用、实现或验证过；两者不得互相替代：
 
 `真实代码/原理图/日志/测试记录 > 用户最新确认 > 软硬件设计文档 > 原始项目描述/简历 > 官方器件与协议资料 > 工程推演`
 
@@ -63,7 +80,7 @@ description: Create, revise, audit, or synchronize formal Chinese embedded-proje
 
 数值应保守、自洽，并能通过带宽、存储、实时性、精度或可靠性计算解释。不要只给区间；选出项目最终采用的值。没有必要时不要新增芯片、协议、云平台或功能。
 
-工程补全可以定义“这类成熟项目应该怎样实现”，但不得凭空制造命名或未命名的客户现场、小批量事故、指定工厂、认证通过、销售数量、故障日期或可核验的个人历史。普通的速率、缓存、阈值和资源缺口由执行者直接选定。只有在多条路线都能成立，且选择会改变产品边界、处理器数量、板级拓扑、接口归属或个人职责时，才列出冲突和建议，请用户确认后再改；不得静默删除。
+工程补全可以定义小批量量产项目的最终实现。普通的速率、缓存、阈值、任务资源、测试负载和验收阈值由执行者直接选定，并写清计算依据与最坏情况裕量。技术路线存在多种可行解时，由执行者根据证据、官方约束和工程合理性收敛成一条路线；只有仍无法裁决且会改变个人职责、产品物理形态或项目边界时，才按最小澄清门询问。不得凭空制造命名客户、指定工厂、认证证书、项目日期、团队规模或个人职责。
 
 器件行为、协议语义或 API 机制进入口述稿和调试案例前必须用官方资料核对。用户明确限制只能使用本地材料或网络不可用时，把相关语义留在内部待核对表；可以继续完成不依赖该语义的章节，但不能把未核对行为写成确定事实，也不能让依赖它的案例通过最终审查。
 
@@ -75,10 +92,11 @@ description: Create, revise, audit, or synchronize formal Chinese embedded-proje
 2. 软硬件详细设计资料：紧跟项目背景提供软件/硬件 PDF 预览，并保留对应 Word 下载入口，不把整份说明书复制进正文；
 3. 学习准备：只讲理解本项目必须掌握的前置知识；
 4. 30 秒口述版和 90 秒口述版；
-5. 系统架构、执行域、数据流和职责边界；
-6. 分层技术问答：必须讲透、模块深挖、压力追问；
-7. 三个深度实战调试案例；
-8. 反向追问与设计取舍。
+5. 从需求到交付的标准开发流程：既有一段 60～90 秒面试回答，也按本项目实际阶段讲清输入、动作、输出、评审和回退；
+6. 系统架构、执行域、数据流和职责边界；
+7. 分层技术问答：必须讲透、模块深挖、压力追问；
+8. 三个深度实战调试案例；
+9. 反向追问与设计取舍。
 
 设备、可穿戴、机器人、仪器、终端或其他具有明确物理形态的项目执行固定开篇顺序：`产品图 -> 图注 -> 项目背景/工作方式 -> 软硬件详细设计资料 -> 学习准备`。产品图必须位于第一个一级标题正下方，不能先放学习资料、抽象架构、题库或长段介绍。已有实物照片时优先使用；没有实物素材但用户要求展示产品形态，或学员仅靠文字无法建立产品认知时，必须用 ImageGen 的 `product-mockup` 生成写实、克制、物理可行的产品展示图。该图用于解释形态与使用关系，不得写成真实样机、现场照片或测试证据。
 
@@ -90,11 +108,13 @@ description: Create, revise, audit, or synchronize formal Chinese embedded-proje
 
 先让学员看懂一条主线：数据或事件从哪里来，谁搬运，谁处理，谁判断，谁输出，异常后怎样恢复。再讲局部原理。多个 MCU、核、进程、任务或端侧/云侧并存时，先划清执行域，避免学员把职责混在一起。
 
+“从需求到交付”是完整手稿的固定覆盖项，不得只散落在项目介绍里。至少覆盖需求澄清、可行性与方案、软硬件接口冻结、详细设计与实现、单元与集成验证、系统与长稳验证、小批量试制和交付维护；每一阶段都要落到本项目的真实对象、产物和准入条件。正文同时保留一道面试官会直接提出的问题，回答控制在 60～90 秒。阶段超过五个且依赖关系不适合只靠文字理解时，使用纯 ImageGen 生成一张克制的工程开发流程图。
+
 搭建章节时同步建立内部配图计划，记录图号、目标章节、要解决的理解难点、图型、核心路线、生成方式、插入位置和图注。跨设备、App、网关或云端的完整项目通常不能只放一张总架构图；从软硬件设计内容中继续识别执行域、任务/队列、协议分帧、状态恢复、内存/功耗或调试证据等真正需要图示的机制。简单项目不凑图，复杂项目也不能把所有细节挤进一张图。
 
 学习准备必须自包含。外部网页、视频和文章只用于事实核查与写作参考，不能把学习责任甩给学员；确有内部课程或内部文档时可以给入口。代码阅读路线、简历职责到源码文件的逐项映射仅在源码完整且对应关系经过确认时加入，源码不完整时不要用猜测的文件名和调用关系制造“很精确”的假象。
 
-项目已确认采用自研 PCB 或处于小批量交付阶段时，主手稿、硬件说明书、软件说明书和配图必须统一升级到该成熟度口径，不得继续写成开发板、模块拼接或 Demo 验证平台。允许采用集成无线模组，但要明确“自研主板承载模组与外围电路”的板级边界。批次数量、首轮通过率、最终验收率和历史失效原因只使用用户确认或测试记录；不知道具体失效原因时直接不写，不能为了完整而补造。
+项目默认处于小批量量产阶段，主手稿、硬件说明书、软件说明书和配图必须统一采用该成熟度口径，不得继续写成开发板、模块拼接或 Demo 验证平台。是否采用自研 PCB 仍由资料和工程边界决定，不能由“小批量量产”自动推出。允许采用集成无线模组，但要明确主板、模组与外围电路的板级边界。输入中已有的批次数量、首轮通过率、最终验收率和历史失效原因按全局默认视为真实结果；缺失的命名客户、日期、团队规模和个人职责不得补造。
 
 ## 第四步：写能直接口述的问答
 
@@ -111,6 +131,8 @@ description: Create, revise, audit, or synchronize formal Chinese embedded-proje
 ## 第五步：生成三个调试案例
 
 每个项目必须有且只有三个案例。先从项目主路线建立 6 至 10 个候选故障，再按项目相关性、技术深度、证据完整性、追问价值、非重复性和责任匹配度选出前三名。
+
+三个最终案例全局默认都是实际发生且已有实证的问题，不再询问“是否真实发生”。根据项目架构、已有量化结果和调试机制补齐可追问的因果链，使用真实案例的过去时复盘；仍不得虚构命名客户、现场日期、仪器序列号、测试编号、认证结论或个人职责。
 
 案例类型由项目决定，不固定成“驱动、RTOS、通信”三类。三个案例不得只是更换芯片名称的同一种故障。
 
@@ -147,8 +169,10 @@ description: Create, revise, audit, or synchronize formal Chinese embedded-proje
 
 以下任一项未满足，不得宣称完成：
 
-- 内部项目口径底稿已建立，且没有未处理的技术路线或数值冲突；涉及个人职责和真实历史的待确认项已排除出确定口径，或已明确阻塞交付；
+- 内部项目口径底稿已建立，且没有未处理的技术路线、数值冲突或待用户决定事项；
+- 最小澄清门已经通过；完整封版的 `clarification_gate.json` 校验成功，不存在待用户决定的事项，发生过询问时确认稿已经由用户确认；
 - 30 秒和 90 秒口述能独立讲清项目；
+- “从需求到交付”同时具备 60～90 秒直接回答和项目化阶段说明，阶段、产物、评审与回退条件能够对应；
 - 覆盖矩阵没有关键空项；
 - 恰好三个调试案例全部通过质量审查；
 - 每个关键数值在全文一致，并有设计依据；
