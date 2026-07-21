@@ -1,4 +1,4 @@
 interface:
   display_name: "嵌入式项目面试手稿"
-  short_description: "先澄清关键边界，再生成正式完整的嵌入式项目面试手稿"
-  default_prompt: "使用 $create-embedded-project-interview-manuscript 先完成最小澄清门，再按小批量量产口径生成正式项目面试手稿，包含产品首图、软硬件设计附件、从需求到交付流程、紫色问答和三个真实调试案例。"
+  short_description: "生成可直接口述的完整项目问答，并无损归档全部真实面经原题"
+  default_prompt: "使用 $create-embedded-project-interview-manuscript，把项目资料和真实面经整理成每题一份完整口述回答的飞书手稿，并将全部原题与来源单独归档。"

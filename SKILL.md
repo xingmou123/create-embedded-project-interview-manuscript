@@ -1,6 +1,6 @@
 ---
 name: create-embedded-project-interview-manuscript
-description: Create, revise, audit, synchronize, or archive formal Chinese embedded-project interview manuscripts from resume bullets, rough project descriptions, Feishu documents, DOCX files, software or hardware design documents, code, schematics, logs, test records, and datasheets. Use when the user asks for 项目面试手稿、项目问答、口述稿、学员讲解、反向追问、项目口径统一、项目真实性检查、实战调试案例、飞书正式手稿、工程配图、封版后归档到简历项目库，或把飞书手稿导出为 DOCX. Uses a scoped grill-me clarification gate before writing, then produces direct engineering-style answers, formal purple-answer layout, pure-ImageGen custom engineering figures, coherent production-grade technical decisions, and exactly three deep debugging cases.
+description: Create, revise, audit, synchronize, or archive formal Chinese embedded-project interview manuscripts from resumes, Feishu or DOCX documents, design files, code, schematics, logs, tests, datasheets, and real interview records. Use for 项目面试手稿、项目问答、口述稿、学员讲解、项目口径统一、真实面经检索与原题归档、实战调试案例、飞书活稿、工程配图、DOCX 导出或封版归档. Produces one fluent complete answer per question, evidence-bounded project claims, exactly three deep debugging cases, and a separate lossless archive of real interview questions when sources exist.
 ---
 
 # 嵌入式项目面试手稿
@@ -11,17 +11,17 @@ description: Create, revise, audit, synchronize, or archive formal Chinese embed
 
 这不是正式软硬件设计方案。设计方案负责定义系统；本 Skill 负责把已确定的系统讲清楚、问透，并补齐面试所需的工程判断。需要先创建或修订正式设计文档时，先使用 `$create-hw-sw-design-docs`，再回到本 Skill。
 
-## 开始前必须读取
+## 按任务读取参考文件
 
-根据任务读取以下参考文件，不要只凭本页概括执行：
+不要为一次局部改写加载全部规范。先判断任务，再完整读取对应文件：
 
-- 始终读取 [project-ledger.md](references/project-ledger.md)：建立唯一项目口径。
-- 始终读取 [clarification-gate.md](references/clarification-gate.md)：在正式生成或写回前完成最小澄清门。
-- 始终读取 [interview-coverage-matrix.md](references/interview-coverage-matrix.md)：控制问题覆盖面。
-- 始终读取 [debugging-cases.md](references/debugging-cases.md)：生成并审查三个调试案例。
-- 创建、改写、排版或交付手稿时读取 [manuscript-style-and-delivery.md](references/manuscript-style-and-delivery.md)。
-- 新建、改写、补图、替换图片或交付完整手稿时读取 [engineering-figures-imagegen.md](references/engineering-figures-imagegen.md)：规划并生成纯 ImageGen 工程配图。
-- 用户确认封版完成或要求存入简历项目库时读取 [project-library-archive.md](references/project-library-archive.md)：更新项目描述旁的唯一手稿入口。
+- 新建完整手稿，或修改事实、技术路线、参数与职责时，读取 [project-ledger.md](references/project-ledger.md)、[clarification-gate.md](references/clarification-gate.md) 和 [interview-coverage-matrix.md](references/interview-coverage-matrix.md)。
+- 创建、改写、排版或写回学员可见内容时，读取 [manuscript-style-and-delivery.md](references/manuscript-style-and-delivery.md)。
+- 检索、归并、回答或归档真实面经时，读取 [real-interview-evidence.md](references/real-interview-evidence.md) 和 [interview-coverage-matrix.md](references/interview-coverage-matrix.md)；凡正式回答涉及项目事实，同时读取 [project-ledger.md](references/project-ledger.md)。
+- 生成或审查调试案例时，读取 [debugging-cases.md](references/debugging-cases.md) 和 [project-ledger.md](references/project-ledger.md)。
+- 新建、补图、替换图片或交付完整手稿时，读取 [engineering-figures-imagegen.md](references/engineering-figures-imagegen.md)。
+- 正式生成、写回或导出前读取 [clarification-gate.md](references/clarification-gate.md)；纯只读审计不运行写入门禁。
+- 用户确认封版完成或要求存入简历项目库时，读取 [project-library-archive.md](references/project-library-archive.md)。
 
 ## 工作方式
 
@@ -41,9 +41,11 @@ description: Create, revise, audit, synchronize, or archive formal Chinese embed
 
 每次只问一个问题并附推荐答案。已经回答的决定立即冻结，不重复确认。没有此类问题时直接执行；发生过询问时，全部问完后给出一次简短确认稿，得到用户确认后才能开始正式生成或写回。
 
-全局默认采用小批量量产成熟度；三个最终调试案例均视为真实发生且有实证；输入材料中已有的量化结果均视为真实场景结果。缺失的工程参数由执行者按量产经验直接定值并计算裕量，技术路线冲突由执行者结合证据、官方约束和工程合理性裁决。除非用户在具体项目中明确覆盖，不得就这些默认项重复提问。
+资料未说明成熟度时，以“小批量可交付”作为工程设计目标，但不声称项目已经完成小批量交付。调试案例和量化结果逐项按证据分类：能证实的写真实复盘或实测，不能证实的写故障注入、设计推演或设计参数。缺失的工程参数由执行者按成熟工程经验直接定值并计算裕量，技术路线冲突由执行者结合证据、官方约束和工程合理性裁决；这些分类不需要让用户替执行者做技术选择。
 
-完整封版时在项目 `work` 目录保存 `clarification_gate.json`，运行 `python <本 Skill 目录>/scripts/validate_clarification_gate.py <清单路径>`。校验未通过时禁止交付。局部审计不创建清单，也不得借审计任务修改正文。
+真实面经的收录范围、归并方式、主问题与嵌套追问、出现次数和正式问答补强位置，由执行者按 [real-interview-evidence.md](references/real-interview-evidence.md) 判断，不触发用户询问。
+
+完整封版时在项目 `work` 目录保存 `clarification_gate.json`，运行 `python <本 Skill 目录>/scripts/validate_clarification_gate.py <清单路径>`。存在真实面经时，再按 [real-interview-evidence.md](references/real-interview-evidence.md) 保存 `real_interview_package.json` 并运行对应校验器。任一校验未通过时禁止交付。局部审计不创建清单，也不得借审计任务修改正文。
 
 ### 主线程与活稿锁
 
@@ -68,6 +70,8 @@ description: Create, revise, audit, synchronize, or archive formal Chinese embed
 - 三个调试案例依赖的硬件行为、软件机制和项目条件；
 - 不得出现的旧口径、冲突描述和未经确认的能力声明。
 
+真实面经只作为“面试官问过什么”的问题证据，不进入项目事实优先级，不能证明本项目采用、实现或验证了题目中的做法。
+
 所有章节、图、问答和案例都从这一份底稿取值。不得在不同答案里临时创造第二套路线。
 
 ## 第二步：补全为成熟工程方案
@@ -82,7 +86,9 @@ description: Create, revise, audit, synchronize, or archive formal Chinese embed
 
 数值应保守、自洽，并能通过带宽、存储、实时性、精度或可靠性计算解释。不要只给区间；选出项目最终采用的值。没有必要时不要新增芯片、协议、云平台或功能。
 
-工程补全可以定义小批量量产项目的最终实现。普通的速率、缓存、阈值、任务资源、测试负载和验收阈值由执行者直接选定，并写清计算依据与最坏情况裕量。技术路线存在多种可行解时，由执行者根据证据、官方约束和工程合理性收敛成一条路线；只有仍无法裁决且会改变个人职责、产品物理形态或项目边界时，才按最小澄清门询问。不得凭空制造命名客户、指定工厂、认证证书、项目日期、团队规模或个人职责。
+工程补全可以定义一套按小批量可交付目标设计的最终实现方案。普通的速率、缓存、阈值、任务资源、测试负载和验收阈值由执行者直接选定，并写清计算依据与最坏情况裕量。技术路线存在多种可行解时，由执行者根据证据、官方约束和工程合理性收敛成一条路线；只有仍无法裁决且会改变个人职责、产品物理形态或项目边界时，才按最小澄清门询问。不得凭空制造命名客户、指定工厂、认证证书、项目日期、团队规模或个人职责。
+
+工程经验补出的具体值在学员可见文档中统一称为“设计参数”，并说明取值、依据、边界和调整条件。只有测试记录、日志或可复现测量支持时才称为“实测结果”或“现场验证”。
 
 器件行为、协议语义或 API 机制进入口述稿和调试案例前必须用官方资料核对。用户明确限制只能使用本地材料或网络不可用时，把相关语义留在内部待核对表；可以继续完成不依赖该语义的章节，但不能把未核对行为写成确定事实，也不能让依赖它的案例通过最终审查。
 
@@ -96,9 +102,11 @@ description: Create, revise, audit, synchronize, or archive formal Chinese embed
 4. 30 秒口述版和 90 秒口述版；
 5. 从需求到交付的标准开发流程：既有一段 60～90 秒面试回答，也按本项目实际阶段讲清输入、动作、输出、评审和回退；
 6. 系统架构、执行域、数据流和职责边界；
-7. 分层技术问答：必须讲透、模块深挖、压力追问；
+7. 分层技术问答：按数据流、模块和真实工程问题组织；
 8. 三个深度实战调试案例；
 9. 反向追问与设计取舍。
+
+存在可靠真实面经时，在正文末尾增加“真实面试问题与完整回答”，作为学员理解项目后的考前突击章节；章节号和题数跟着当前项目走。相同回答逻辑的问法合并，只有需要不同回答的真实追问才降一级嵌套。每道主问题和追问都必须有一行灰色来源与一份完整紫色回答，不展示学习优先级、评分、复习映射或多版本答案。另建独立“真实面经原题档案”，无损保存全部在范围内的面经记录、原题、原顺序和来源链接；主稿只保留一个紧凑入口，不复制原题列表。
 
 设备、可穿戴、机器人、仪器、终端或其他具有明确物理形态的项目执行固定开篇顺序：`产品图 -> 图注 -> 项目背景/工作方式 -> 软硬件详细设计资料 -> 学习准备`。产品图必须位于第一个一级标题正下方，不能先放学习资料、抽象架构、题库或长段介绍。已有实物照片时优先使用；没有实物素材但用户要求展示产品形态，或学员仅靠文字无法建立产品认知时，必须用 ImageGen 的 `product-mockup` 生成写实、克制、物理可行的产品展示图。该图用于解释形态与使用关系，不得写成真实样机、现场照片或测试证据。
 
@@ -106,7 +114,7 @@ description: Create, revise, audit, synchronize, or archive formal Chinese embed
 
 软硬件详细设计资料必须在问答前、且尽量位于开篇前几屏。默认按候选人岗位相关性排序：嵌入式软件岗位先软件后硬件，硬件岗位先硬件后软件。每份资料使用“名称 + 一段范围导读 + PDF 预览 + 同版本 Word 下载”；只有 Word 时先导出同版本 PDF。禁止只写本地路径、只放 Word 卡片、把附件堆到文末，或用几句话代替已有的完整设计说明书。
 
-不要为了套模板强行加入 BLE、Bootloader、云端或工业通信。问题数量不固定，以覆盖真正重要的面试面为停止条件。三层问答的数量也不设硬指标：第一层让学员能把项目讲明白，第二层回答模块级追问，第三层只保留真正能检验工程判断的问题。
+不要为了套模板强行加入 BLE、Bootloader、云端或工业通信。问题数量不固定，以覆盖真正重要的面试面为停止条件。问答按项目主线和模块自然展开，只有确实需要另一套回答逻辑的问题才单独保留。
 
 先让学员看懂一条主线：数据或事件从哪里来，谁搬运，谁处理，谁判断，谁输出，异常后怎样恢复。再讲局部原理。多个 MCU、核、进程、任务或端侧/云侧并存时，先划清执行域，避免学员把职责混在一起。
 
@@ -116,7 +124,7 @@ description: Create, revise, audit, synchronize, or archive formal Chinese embed
 
 学习准备必须自包含。外部网页、视频和文章只用于事实核查与写作参考，不能把学习责任甩给学员；确有内部课程或内部文档时可以给入口。代码阅读路线、简历职责到源码文件的逐项映射仅在源码完整且对应关系经过确认时加入，源码不完整时不要用猜测的文件名和调用关系制造“很精确”的假象。
 
-项目默认处于小批量量产阶段，主手稿、硬件说明书、软件说明书和配图必须统一采用该成熟度口径，不得继续写成开发板、模块拼接或 Demo 验证平台。是否采用自研 PCB 仍由资料和工程边界决定，不能由“小批量量产”自动推出。允许采用集成无线模组，但要明确主板、模组与外围电路的板级边界。输入中已有的批次数量、首轮通过率、最终验收率和历史失效原因按全局默认视为真实结果；缺失的命名客户、日期、团队规模和个人职责不得补造。
+主手稿、硬件说明书、软件说明书和配图必须采用同一成熟度口径。资料未说明时，按小批量可交付目标完成工程设计，但可见文档只能说“按小批量目标设计”，不能写成已经量产或交付。是否采用自研 PCB 仍由资料和工程边界决定，不能由设计目标自动推出。允许采用集成无线模组，但要明确主板、模组与外围电路的板级边界。批次数量、首轮通过率、最终验收率和历史失效原因只有得到对应证据或用户明确确认时才写成真实结果；缺失的命名客户、日期、团队规模和个人职责不得补造。
 
 ## 第四步：写能直接口述的问答
 
@@ -126,7 +134,9 @@ description: Create, revise, audit, synchronize, or archive formal Chinese embed
 - **完整回答**：整段使用紫色文本，先给结论，再按实现、原因、异常处理和边界自然展开。学员可以直接念，听起来仍像现场表达；不得在回答前另加“可直接口述回答”等标签。
 - **补充理解**：仅在概念困难、容易混淆或存在事实边界时增加一小段普通黑色说明。
 
-正常问题优先控制在约 30 至 90 秒。不要把所有知识都塞进首答；把容易被追问的细节留给后续问题。重要技术词至少要能解释：原理是什么、为什么这样选、失败时怎么办、适用边界在哪里。
+一个问题只生成一份答案，不提供简版、完整版、进阶版或按时长划分的多个版本。项目介绍章节中的 30 秒和 90 秒介绍是两个独立用途，不得套到每道真题上。回答长度服从完整性和口述流畅度：能一段说清就不拆段，也不能为了缩短而把同一逻辑拆成一串伪追问。重要技术词至少要能解释原理、选型、失败处理和适用边界，但要自然融入回答，不显示结构标签。
+
+真实面经问题在标题下、回答前增加一行灰色来源，列出代表公司或岗位和不同面经记录的出现次数。行业或公司差异只有在真实约束会改变回答时才形成嵌套追问；答案逻辑相同时合并，不生成行业版答案。
 
 禁止使用“面试官意图、核心亮点、标准答案、高分话术、记忆口诀、自测题”等培训模板标签。禁止空泛形容词、堆术语、对仗排比和机器人式过渡句。不要让学员背不懂的句子。
 
@@ -134,7 +144,7 @@ description: Create, revise, audit, synchronize, or archive formal Chinese embed
 
 每个项目必须有且只有三个案例。先从项目主路线建立 6 至 10 个候选故障，再按项目相关性、技术深度、证据完整性、追问价值、非重复性和责任匹配度选出前三名。
 
-三个最终案例全局默认都是实际发生且已有实证的问题，不再询问“是否真实发生”。根据项目架构、已有量化结果和调试机制补齐可追问的因果链，使用真实案例的过去时复盘；仍不得虚构命名客户、现场日期、仪器序列号、测试编号、认证结论或个人职责。
+三个最终案例逐个按证据分类。只有代码、日志、测试记录、可复现测量或用户对具体项目的明确确认支持时，才能作为真实案例使用过去时复盘；否则写成故障注入或设计推演，不得暗示实际发生。可以根据项目架构、已确认结果和调试机制补齐可追问的因果链，但不得虚构日志原文、波形读数、命名客户、现场日期、仪器序列号、测试编号、认证结论或个人职责。
 
 案例类型由项目决定，不固定成“驱动、RTOS、通信”三类。三个案例不得只是更换芯片名称的同一种故障。
 
@@ -156,12 +166,15 @@ description: Create, revise, audit, synchronize, or archive formal Chinese embed
 - 三个案例能回扣前文机制，不出现正文从未建立的新系统；
 - 学员先理解主线，再接触局部细节；
 - 没有靠增加题量掩盖缺失的关键问题。
+- 真实面经已逐题进入内部映射；全部在范围内的原题已进入独立档案，部分覆盖的回答已经补强，未覆盖的核心题已经新增正式问答。
 
 完成后从头模拟一次面试：30 秒介绍、90 秒介绍、沿简历逐条追问、挑一个案例深入、最后问设计取舍。发现回答依赖未定义名词或前后数值不一致，先修项目底稿，再同步所有出现位置。
 
 ## 第七步：排版、写回和交付
 
 用户提供飞书链接或明确要求飞书时，以飞书主手稿为唯一活稿和默认交付，不额外生成主手稿 Word。软硬件详细设计说明书属于独立工程附件：按 `$create-hw-sw-design-docs` 生成 Word，并导出同版本 PDF；飞书主手稿只保留简短导读、PDF 预览和 Word 下载入口，不把说明书全文展开，也不把附件误当成第二份主手稿。只有用户明确要求导出主手稿快照时，才从最新飞书 revision 生成主手稿 DOCX。
+
+真实面经原题档案作为独立飞书参考文档存在，但它不是另一份主手稿。原题档案按面经记录保留原题、原顺序和可追溯来源，不筛选、不润色、不去重，也不复制主稿答案。先写完并核验原题档案，再从主稿移除大段原题附录；主稿最终只保留正式完整问答和唯一档案入口。
 
 写回前重新读取文档版本和目标位置，避免用旧 block ID 覆盖用户刚做的修改。写回后复读受影响章节，检查标题层级、答案颜色、图片、列表、链接和相邻段落。DOCX 交付必须渲染后目检，不能只验证文件可打开。
 
@@ -182,6 +195,7 @@ description: Create, revise, audit, synchronize, or archive formal Chinese embed
 - 30 秒和 90 秒口述能独立讲清项目；
 - “从需求到交付”同时具备 60～90 秒直接回答和项目化阶段说明，阶段、产物、评审与回退条件能够对应；
 - 覆盖矩阵没有关键空项；
+- 可靠来源中的直接项目核心题均已覆盖；同技术栈题只填补重要空白，部分覆盖和未覆盖的核心题已反向修订正式问答；每道正式问题和嵌套追问都有且只有一份完整回答和一行可复算的灰色来源；
 - 恰好三个调试案例全部通过质量审查；
 - 每个关键数值在全文一致，并有设计依据；
 - 文风简洁、自然、能直接说出口；
@@ -190,4 +204,5 @@ description: Create, revise, audit, synchronize, or archive formal Chinese embed
 - 具有物理形态的项目已按固定开篇顺序交付：第一屏可见产品图，软硬件设计 PDF 预览和 Word 下载位于学习准备与问答之前；
 - 已完成一次外部架构师视角的静默评审，至少检查项目边界、职责、数据流、协议、资源、恢复、交付成熟度和可追问性；发现的问题已直接修入正文，不把冗长评审表作为默认交付；
 - 已完成用户要求的交付载体；飞书场景未擅自生成主手稿 DOCX，设计说明书附件的 Word/PDF 与飞书主手稿 revision 保持一致。
+- 存在真实面经时，独立原题档案的记录数、原题数和来源数可复算，全部在范围内的原题与顺序均已保存；`real_interview_package.json` 校验成功，档案入口可访问，主稿没有复制原题列表、多版本答案、内部评分或筛选过程。
 - 用户已明确确认封版完成且简历项目库可用时，项目描述旁的唯一“项目手稿”入口已指向当前活稿；已复读相邻内容并确认没有重复条目或旧链接残留。
