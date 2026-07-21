@@ -24,9 +24,9 @@ USER_DECISION_CATEGORIES = {
     "project_boundary",
 }
 EXPECTED_DEFAULTS = {
-    "delivery_maturity": "small_batch",
-    "debugging_case_nature": "confirmed_real",
-    "provided_quantitative_results": "confirmed_real",
+    "delivery_maturity": "small_batch_design_target",
+    "debugging_case_nature": "evidence_driven",
+    "provided_quantitative_results": "evidence_driven",
 }
 ALLOWED_OVERRIDE_VALUES = {
     "delivery_maturity": {
@@ -42,6 +42,7 @@ ALLOWED_OVERRIDE_VALUES = {
     },
     "provided_quantitative_results": {
         "confirmed_real",
+        "design_parameter",
         "unverified",
     },
 }
