@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -12,6 +13,26 @@ from typing import Any
 
 ALLOWED_DISPOSITIONS = {"core_question", "nested_followup", "archive_only"}
 ALLOWED_KINDS = {"core_question", "nested_followup"}
+URL_PATTERN = re.compile(r"https?://[^\s\"'<>]+", re.IGNORECASE)
+FORBIDDEN_ARCHIVE_HEADER = re.compile(r"原始来源\s*[：:]")
+
+
+def validate_archive_desensitization(content: str) -> list[str]:
+    """Ensure student-facing raw interview archive leaks no internal source URLs."""
+    errors: list[str] = []
+    urls = URL_PATTERN.findall(content)
+    if urls:
+        sample = ", ".join(urls[:3])
+        errors.append(
+            f"student-facing archive leaks {len(urls)} URL(s) (e.g. {sample}); "
+            "keep source URLs only in local work/ JSON manifests"
+        )
+    if FORBIDDEN_ARCHIVE_HEADER.search(content):
+        errors.append(
+            "student-facing archive contains forbidden '原始来源' header; "
+            "remove internal review links and source pointers"
+        )
+    return errors
 
 
 def is_nonempty_string(value: Any) -> bool:
@@ -153,6 +174,7 @@ def validate(payload: dict[str, Any]) -> list[str]:
         question_ids.add(question_id)
 
     referenced_raw_ids: list[str] = []
+    question_parents: dict[str, str] = {}
     for index, question in enumerate(questions):
         prefix = f"questions[{index}]"
         if not isinstance(question, dict):
@@ -173,8 +195,11 @@ def validate(payload: dict[str, Any]) -> list[str]:
             errors.append(f"{prefix}.kind is invalid: {kind}")
         if kind == "core_question" and parent_id not in (None, ""):
             errors.append(f"{prefix}.parent_id must be empty for core_question")
-        if kind == "nested_followup" and parent_id not in question_ids:
-            errors.append(f"{prefix}.parent_id must reference an existing question")
+        if kind == "nested_followup":
+            if not is_nonempty_string(parent_id) or parent_id not in question_ids:
+                errors.append(f"{prefix}.parent_id must reference an existing question")
+            else:
+                question_parents[question_id] = parent_id
         if question.get("answer_blocks") != 1:
             errors.append(f"{prefix}.answer_blocks must be 1")
         if question.get("source_lines") != 1:
@@ -209,6 +234,18 @@ def validate(payload: dict[str, Any]) -> list[str]:
                 f"{prefix}.displayed_occurrence_count must be {occurrence_count}"
             )
 
+    checked_parents: set[str] = set()
+    for question_id in question_parents:
+        path: set[str] = set()
+        current = question_id
+        while current in question_parents and current not in checked_parents:
+            if current in path:
+                errors.append(f"question parent cycle detected at {current}")
+                break
+            path.add(current)
+            current = question_parents[current]
+        checked_parents.update(path)
+
     reference_counts = Counter(referenced_raw_ids)
     for raw_id, disposition in raw_to_disposition.items():
         count = reference_counts[raw_id]
@@ -232,6 +269,12 @@ def validate(payload: dict[str, Any]) -> list[str]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", type=Path, help="path to real_interview_package.json")
+    parser.add_argument(
+        "--archive-file",
+        type=Path,
+        default=None,
+        help="optional student-facing raw archive XML/Markdown file to check for leaked source URLs",
+    )
     args = parser.parse_args()
 
     try:
@@ -245,6 +288,13 @@ def main() -> int:
         return 1
 
     errors = validate(payload)
+    if args.archive_file is not None:
+        try:
+            archive_text = args.archive_file.read_text(encoding="utf-8")
+        except OSError as exc:
+            errors.append(f"failed to read archive file: {exc}")
+        else:
+            errors.extend(validate_archive_desensitization(archive_text))
     if errors:
         for error in errors:
             print(f"FAIL: {error}")

@@ -1,4 +1,4 @@
 interface:
-  display_name: "嵌入式项目面试手稿"
-  short_description: "生成可直接口述的完整项目问答，并无损归档全部真实面经原题"
-  default_prompt: "使用 $create-embedded-project-interview-manuscript，把项目资料和真实面经整理成每题一份完整口述回答的飞书手稿，并将全部原题与来源单独归档。"
+  display_name: "嵌入式项目面试手稿（V3 活人解耦版）"
+  short_description: "硬账定案 + Gemini 活人盲写 + Codex 只读审硬伤，面向 OTA 学员打造零黑话项目手稿"
+  default_prompt: "使用 $create-embedded-project-interview-manuscript，按三段解耦流程完成 6 笔量产硬账、纯 ImageGen 配图、无黑话/无叠甲活人口述（含 OTA 三件套与默认 1 则旗舰深案）及脱敏真题归档。"
