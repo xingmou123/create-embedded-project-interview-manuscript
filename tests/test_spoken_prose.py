@@ -129,6 +129,16 @@ class SpokenProseBoundaryTests(unittest.TestCase):
                 errors, _ = lint_text(content)
                 self.assertTrue(any("internal/defensive leak" in item for item in errors))
 
+    def test_ai_card_labels_are_hard_errors(self) -> None:
+        for content in (
+            "考前速记卡：记下下面十个数。",
+            "【诊断卡】本场表现总结。",
+            "避坑指南：千万别踩这三个坑。",
+        ):
+            with self.subTest(content=content):
+                errors, _ = lint_text(content)
+                self.assertTrue(any("production label" in item for item in errors))
+
 
 if __name__ == "__main__":
     unittest.main()

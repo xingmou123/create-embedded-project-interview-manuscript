@@ -1,8 +1,8 @@
 # 只读技术复核与飞书交付（Stage 3）
 
-## 1. Codex 只读技术复核契约（`audit` / `high`）
+## 1. 独立只读技术复核契约（Stage 3）
 
-Gemini 完成活人正文初稿后，经 `invoke-codex.ps1 -Mode audit` 派 Codex 做纯只读技术审校：
+完成活人正文初稿后，新开一次独立只读复核（Antigravity 环境经 `invoke-codex.ps1 -Mode audit` 派 Codex；单 Codex 环境必须新开独立只读会话，绝不复用 Stage 2 写稿会话）：
 
 - **Codex 只查硬伤**：芯片引脚复用冲突、时钟/采样/总线负载计算错误、Flash 擦写与 ECC 约束违规、RTOS 中断优先级违规、协议方向/字节序/CRC 算错。
 - **Codex 禁止做的事**：禁止改写中文口述腔调，禁止往正文里塞“本方案/冻结/设计基线/推演语态”或叠甲尾句，禁止把调试案例退回“如果出现…我会…”。

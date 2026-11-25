@@ -22,6 +22,13 @@ FORBIDDEN_LABELS = (
     "高分话术",
     "记忆口诀",
     "自测题",
+    "考前速记卡",
+    "考前速查卡",
+    "核心硬数字速记卡",
+    "学习路线图",
+    "追问预判",
+    "诊断卡",
+    "避坑指南",
 )
 # Internal Skill/Codex jargon and defensive disclaimer patterns forbidden in learner prose
 FORBIDDEN_LEAKS = (
@@ -55,6 +62,7 @@ AI_SMELL_PATTERNS = (
     ("em-dash", re.compile(r"——")),
     ("第一/第二/第三", re.compile(r"第一[，,、：:].*第二[，,、：:].*第三")),
     ("彻底封死", re.compile(r"彻底封死|彻底杜绝|完美解决|全面赋能")),
+    ("职场/批卷套话", re.compile(r"含金量|电控赛道|深扎|核心硬伤|致命硬伤")),
 )
 LATIN_TOKEN = re.compile(r"[A-Za-z][A-Za-z0-9_.+/-]*")
 TAG = re.compile(r"<[^>]+>")

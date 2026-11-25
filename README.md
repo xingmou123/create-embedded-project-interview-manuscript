@@ -9,7 +9,7 @@
 V3 将整套技能压减到 **1 份主流程 + 3 份精简参考（~15 KB）**，并用三段解耦 + Python 硬拦截守住质量：
 
 1. **Stage 1：硬账定案、纯 ImageGen 配图与面经脱敏**（[engineering-spec.md](references/engineering-spec.md)）：先把 6 笔量产硬账算准，用 Codex `image_gen` 生成高清全中文工程图并逐张目视核验，检索团队面经库生成**零内部链接的脱敏原题档案**。
-2. **Stage 2：纯净上下文盲写活人口述**（[human-voice.md](references/human-voice.md)）：由 Gemini 主笔，彻底隔离内部 JSON 门禁与黑话，配齐面向 OTA 学员的三件套（学前物理大白话 + 2–3 段精简代码/报文 + 考前 2 分钟硬数字速记卡），默认打透 **1 则旗舰级深度量产调试案例**（证据对照表 + 4–5 连深追拆解）。
+2. **Stage 2：纯净上下文盲写活人口述**（[human-voice.md](references/human-voice.md)）：首选 Gemini 主笔（单 Codex 环境必须新开独立干净会话），彻底隔离内部 JSON 门禁与黑话；文首用老师自然开场（`先说几句这份手稿怎么看`），配齐学前物理大白话 + 2–3 段精简代码/报文 + 核心题 `如果接着追问：`（拒绝 AI 模板速记卡/打卡表），默认打透 **1 则旗舰级深度量产调试案例**（证据对照表 + 4–5 连深追拆解）。
 3. **Stage 3：Codex 只读审硬伤 + 自动拦截 + 飞书实测复读**（[review-and-publish.md](references/review-and-publish.md)）：Codex `audit` 只挑物理/寄存器/时序/协议硬伤、禁改中文腔调；`lint_spoken_prose.py` 硬拦截制作标签、内部黑话与叠甲尾句；`validate_real_interview_package.py --archive-file` 硬拦截学员原题档案链接泄漏；飞书写回后强制 `--detail full` 复读验收。
 
 ## 安装与调用
