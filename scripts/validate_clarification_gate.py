@@ -24,6 +24,7 @@ USER_DECISION_CATEGORIES = {
     "project_boundary",
 }
 EXPECTED_DEFAULTS = {
+    "engineering_design": "production_ready_complete",
     "delivery_maturity": "small_batch_design_target",
     "debugging_case_nature": "evidence_driven",
     "provided_quantitative_results": "evidence_driven",
@@ -98,7 +99,7 @@ def validate(payload: dict[str, Any]) -> list[str]:
             if not isinstance(value, str) or not value.strip():
                 errors.append(f"{prefix}.{key} must be a non-empty string")
         field = override.get("field")
-        if isinstance(field, str) and field not in EXPECTED_DEFAULTS:
+        if isinstance(field, str) and field not in ALLOWED_OVERRIDE_VALUES:
             errors.append(f"{prefix}.field is invalid: {field}")
         elif isinstance(field, str):
             if field in override_fields:
